@@ -1,0 +1,134 @@
+/* src/pages/AgentPage.css */
+.agent-page {
+  display: flex;
+  flex-direction: column;
+  height: 80vh;
+  max-width: 800px;
+  margin: auto;
+}
+
+.chat-window {
+  flex-grow: 1;
+  padding: 20px;
+  overflow-y: auto;
+  background-color: #f9f9f9;
+  border: 1px solid #e8ecf0;
+  border-radius: 10px 10px 0 0;
+}
+
+.message {
+  display: flex;
+  margin-bottom: 15px;
+}
+
+.message.user {
+  justify-content: flex-end;
+}
+
+.message.bot {
+  justify-content: flex-start;
+}
+
+.message-bubble {
+  max-width: 70%;
+  padding: 10px 15px;
+  border-radius: 18px;
+  line-height: 1.6;
+  word-wrap: break-word;
+}
+
+.message.user .message-bubble {
+  background-color: #4a90e2;
+  color: white;
+}
+
+.message.bot .message-bubble {
+  background-color: #e9e9eb;
+  color: #333;
+}
+
+.sources {
+  margin-top: 10px;
+  padding-top: 10px;
+  border-top: 1px dashed #ccc;
+  font-size: 0.85rem;
+}
+
+.sources summary {
+  cursor: pointer;
+  color: #4a90e2;
+  user-select: none;
+}
+
+.sources ul {
+  padding-left: 1.2rem;
+  margin-top: 0.5rem;
+}
+
+.sources li {
+  margin-bottom: 0.5rem;
+  color: #666;
+}
+
+.chat-input-form {
+  display: flex;
+  padding: 10px;
+  background: white;
+  border: 1px solid #e8ecf0;
+  border-top: none;
+  border-radius: 0 0 10px 10px;
+}
+
+.chat-input-form input {
+  flex-grow: 1;
+  padding: 10px 15px;
+  border: 1px solid #ddd;
+  border-radius: 20px;
+  margin-right: 10px;
+  font-size: 1rem;
+  outline: none;
+}
+
+.chat-input-form input:focus {
+  border-color: #4a90e2;
+}
+
+.chat-input-form button {
+  padding: 10px 24px;
+  border: none;
+  background-color: #4a90e2;
+  color: white;
+  border-radius: 20px;
+  cursor: pointer;
+  font-size: 1rem;
+  font-weight: 500;
+}
+
+.chat-input-form button:disabled {
+  background-color: #a0cfff;
+  cursor: not-allowed;
+}
+
+.typing-indicator span {
+  height: 8px;
+  width: 8px;
+  background-color: #9e9ea1;
+  border-radius: 50%;
+  display: inline-block;
+  animation: bob 1.4s infinite ease-in-out;
+  margin: 0 2px;
+}
+
+.typing-indicator span:nth-of-type(2) {
+  animation-delay: 0.2s;
+}
+
+.typing-indicator span:nth-of-type(3) {
+  animation-delay: 0.4s;
+}
+
+@keyframes bob {
+  0% { transform: translateY(0); }
+  50% { transform: translateY(-5px); }
+  100% { transform: translateY(0); }
+}
