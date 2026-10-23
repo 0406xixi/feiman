@@ -13,8 +13,6 @@ function QuizPage() {
   const [result, setResult] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState('');
-
-  // 用于展示当前进度（连续答对次数 / 状态）
   const [progress, setProgress] = useState(null);
 
   // 加载知识点
@@ -54,9 +52,7 @@ function QuizPage() {
     }
   };
 
-  // ========================================
-  // 提交答案（连续答对 3 题 → 已掌握）
-  // ========================================
+  // 提交答案
   const handleSubmit = async (e) => {
     e.preventDefault();
     if (!selectedOption) {
@@ -67,7 +63,6 @@ function QuizPage() {
     setResult({ isCorrect, explanation: question.explanation });
 
     try {
-      // 拉取最新状态
       const kpResponse = await apiClient.get(`/knowledge-points/${id}`);
       const currentKp = kpResponse.data;
       const currentStreak = currentKp.correctStreak || 0;
@@ -79,18 +74,18 @@ function QuizPage() {
 
       if (isCorrect) {
         newStreak = currentStreak + 1;
-        newReviewList = false;
-
+        
         if (newStreak >= 3) {
-          newStatus = 'mastered';       // 连续答对 3 题 → 已掌握
+          newStatus = 'mastered';
+          newReviewList = false; // 👈 核心修复：一旦掌握，自动从复习列表移除
         } else {
-          // 不足 3 题：保持原状态（不能因为答对而"降级"）
           newStatus = currentStatus === 'mastered' ? 'mastered' : currentStatus;
+          newReviewList = false;
         }
       } else {
         newStreak = 0;
-        newStatus = 'in_progress';      // 答错 → 需复习
-        newReviewList = true;
+        newStatus = 'in_progress';
+        newReviewList = true; // 👈 答错，加入复习列表
       }
 
       await apiClient.put(`/knowledge-points/${id}`, {
@@ -105,10 +100,6 @@ function QuizPage() {
         remaining: Math.max(0, 3 - newStreak),
         finalStatus: newStatus,
       });
-
-      console.log(
-        `📊 状态更新：连续答对 ${newStreak} 次，status=${newStatus}，reviewList=${newReviewList}`
-      );
     } catch (err) {
       console.error('更新知识点状态失败', err);
     }
@@ -199,26 +190,18 @@ function QuizPage() {
       {result && (
         <div style={{ background: 'white', padding: '1.5rem', borderRadius: '10px' }}>
           <h2>测评结果</h2>
-          <p
-            style={{
-              color: result.isCorrect ? '#27ae60' : '#e74c3c',
-              fontWeight: 'bold',
-              fontSize: '1.3rem',
-              margin: '1rem 0',
-            }}
-          >
+          <p style={{ color: result.isCorrect ? '#27ae60' : '#e74c3c', fontWeight: 'bold', fontSize: '1.3rem', margin: '1rem 0' }}>
             {result.isCorrect ? '✅ 回答正确！' : '❌ 回答错误！'}
           </p>
           <p><strong>正确答案：</strong>{question.answer}</p>
           <p style={{ marginTop: '0.8rem' }}><strong>解释：</strong>{result.explanation}</p>
 
-          {/* 进度反馈 */}
           {progress && (
             <div style={{ marginTop: '1rem', padding: '0.8rem 1rem', borderRadius: '8px', background: '#f9f9f9' }}>
               {progress.isCorrect ? (
                 progress.newStreak >= 3 ? (
                   <p style={{ color: '#27ae60', margin: 0 }}>
-                    🎉🎉 恭喜！连续答对 3 题，本知识点已标记为 <strong>「已掌握」</strong>。
+                    🎉🎉 恭喜！连续答对 3 题，本知识点已标记为 <strong>「已掌握」</strong>，并已移出复习列表。
                   </p>
                 ) : (
                   <p style={{ color: '#27ae60', margin: 0 }}>
