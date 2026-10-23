@@ -18,6 +18,7 @@ function Layout() {
         <Link to="/">主页</Link>
         <Link to="/agent">🤖 AI 助手</Link>
         <Link to="/graph">🕸 知识图谱</Link>
+        <Link to="/3d-world">🌌 3D 视界</Link>
         {token ? (
           <button onClick={handleLogout}>退出登录</button>
         ) : (

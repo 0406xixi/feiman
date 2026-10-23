@@ -10,6 +10,7 @@ import ProtectedRoute from './components/ProtectedRoute';
 import QuizPage from './pages/QuizPage';
 import AgentPage from './pages/AgentPage';
 import GraphPage from './pages/GraphPage';
+import ThreeJSPage from './pages/ThreeJSPage';
 
 function App() {
   return (
@@ -26,6 +27,7 @@ function App() {
           <Route path="/quiz/:id" element={<QuizPage />} />
           <Route path="/agent" element={<AgentPage />} />
           <Route path="/graph" element={<GraphPage />} />
+          <Route path="/3d-world" element={<ThreeJSPage />} />
         </Route>
       </Route>
     </Routes>
