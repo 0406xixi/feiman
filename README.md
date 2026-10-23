@@ -18,6 +18,10 @@
 - **AI 服务**：DeepSeek API / 硅基流动 API / 百度 ASR
 
 ## 本地运行
+http://localhost:5173/
+
+## GitHub仓库
+https://github.com/0406xixi/feiman
 
 ### 后端
 ```bash
